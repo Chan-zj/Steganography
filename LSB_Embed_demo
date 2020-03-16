@@ -1,0 +1,40 @@
+from PIL import Image
+def plus(str):
+    return str.zfill(8)
+
+def get_key(strr):
+    tmp=strr
+    f=open(tmp,"rb")
+    str=""
+    s=f.read()
+    for i in range(len(s)):
+        str=str+plus(bin(s[i]).replace('0b',''))
+    f.close()
+    return str
+
+def mod(x,y):
+    return x%y
+
+def func(str1,str2,str3):
+    im=Image.open(str1)
+    width=im.size[0]
+    print("width:"+str(width)+"\n")
+    height = im.size[1]
+    print ("height:"+str(height)+"\n")
+    count=0
+    key=get_key(str2)
+    keylen = len(key)
+    for h in range(0,height):
+        for w in range(0, width):
+            pixel = im.getpixel((w, h))
+            if count == keylen:
+                break
+            pixel=pixel-mod(pixel,2)+int(key[count])
+            im.putpixel((w, h), pixel)
+            count += 1
+    im.save(str3)
+
+str1="C:/Users/Administrator/Desktop/1.pgm"
+str2="C:/Users/Administrator/Desktop/test.txt"
+str3="C:/Users/Administrator/Desktop/result.pgm"
+func(str1,str2,str3)
